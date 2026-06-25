@@ -222,10 +222,10 @@ mark {
   cursor: pointer;
 }
 
-mark.mark-shici { background: #f5c842; color: #2c2c2c; }
-mark.mark-shici:hover { background: #e6b800; }
-mark.mark-xuci { background: #7ecfb3; color: #1a3a2c; }
-mark.mark-xuci:hover { background: #4db896; }
+mark.mark-shici { background: #faeea0; color: #2c2c2c; }
+mark.mark-shici:hover { background: #f5e070; }
+mark.mark-xuci { background: #c8ede3; color: #1a3a2c; }
+mark.mark-xuci:hover { background: #a8ddd0; }
 mark.mark-key { background: #ff8c00; color: #fff; font-weight: 700; }
 mark.mark-key:hover { background: #e07800; }
 
