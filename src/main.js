@@ -175,70 +175,69 @@ async function init() {
 
   document.getElementById('detail-back').addEventListener('click', showList);
 
-  const trigger = document.getElementById('article-select-trigger');
-  const dropdown = document.getElementById('article-select-dropdown');
-  const periodFilters = document.getElementById('period-filters');
+  // Nav toggle
+  const layout = document.querySelector('.layout');
+  document.getElementById('nav-toggle').addEventListener('click', () => {
+    layout.classList.toggle('nav-hidden');
+  });
 
-  let activePeriod = null;
-
-  // Build period filter buttons
-  const periods = [...new Set(articles.map(a => a.period).filter(Boolean))];
-  if (periods.length > 0) {
-    periods.forEach(period => {
-      const btn = document.createElement('button');
-      btn.className = 'period-btn';
-      btn.textContent = period;
-      btn.dataset.period = period;
-      btn.addEventListener('click', () => {
-        if (activePeriod === period) {
-          activePeriod = null;
-          btn.classList.remove('active');
-        } else {
-          activePeriod = period;
-          periodFilters.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-        }
-        rebuildDropdown();
-      });
-      periodFilters.appendChild(btn);
-    });
-  }
-
-  function getFilteredArticles() {
-    return activePeriod ? articles.filter(a => a.period === activePeriod) : articles;
-  }
-
-  function rebuildDropdown() {
-    dropdown.innerHTML = '';
-    const filtered = getFilteredArticles();
-    filtered.forEach((a) => {
-      const idx = articles.indexOf(a);
-      const num = articles.indexOf(a) + 1;
-      const li = document.createElement('li');
-      li.textContent = `${num}. ${a.title}`;
-      li.addEventListener('click', () => selectArticle(idx));
-      dropdown.appendChild(li);
-    });
-    // Auto-select first of filtered list
-    if (filtered.length > 0) selectArticle(articles.indexOf(filtered[0]));
-  }
+  const nav = document.getElementById('article-nav');
+  let currentIdx = 0;
 
   function selectArticle(i) {
-    const num = i + 1;
-    trigger.textContent = `${num}. ${articles[i].title}`;
-    dropdown.querySelectorAll('li').forEach((li) => li.classList.remove('selected'));
-    dropdown.classList.remove('open');
+    currentIdx = i;
+    // Update active state
+    nav.querySelectorAll('.nav-article-item').forEach(el => {
+      el.classList.toggle('active', +el.dataset.idx === i);
+    });
     runAnalysis(articles[i]);
   }
 
-  trigger.addEventListener('click', (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle('open');
+  // Group articles by period → group
+  const periodMap = {};
+  articles.forEach((a, i) => {
+    const period = a.period || '其他';
+    const group = a.group || '其他';
+    if (!periodMap[period]) periodMap[period] = {};
+    if (!periodMap[period][group]) periodMap[period][group] = [];
+    periodMap[period][group].push({ a, i });
   });
 
-  document.addEventListener('click', () => dropdown.classList.remove('open'));
+  let globalNum = 1;
+  Object.entries(periodMap).forEach(([period, groups]) => {
+    const periodEl = document.createElement('div');
+    periodEl.className = 'nav-period';
 
-  rebuildDropdown();
+    const periodHeader = document.createElement('div');
+    periodHeader.className = 'nav-period-header';
+    periodHeader.textContent = period;
+    periodEl.appendChild(periodHeader);
+
+    Object.entries(groups).forEach(([group, items]) => {
+      const groupEl = document.createElement('div');
+      groupEl.className = 'nav-group';
+
+      const groupHeader = document.createElement('div');
+      groupHeader.className = 'nav-group-header';
+      groupHeader.textContent = group;
+      groupEl.appendChild(groupHeader);
+
+      items.forEach(({ a, i }) => {
+        const item = document.createElement('div');
+        item.className = 'nav-article-item';
+        item.dataset.idx = i;
+        item.innerHTML = `<span class="nav-num">${globalNum++}</span>${a.title}`;
+        item.addEventListener('click', () => selectArticle(i));
+        groupEl.appendChild(item);
+      });
+
+      periodEl.appendChild(groupEl);
+    });
+
+    nav.appendChild(periodEl);
+  });
+
+  selectArticle(0);
 }
 
 init();

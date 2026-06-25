@@ -10,11 +10,7 @@
 <body>
   <header>
     <h1>古文词汇分析</h1>
-    <div id="period-filters" class="period-filters"></div>
-    <div class="custom-select" id="article-select-wrapper">
-      <div class="custom-select-trigger" id="article-select-trigger">选择文章</div>
-      <ul class="custom-select-dropdown" id="article-select-dropdown"></ul>
-    </div>
+    <button id="nav-toggle" title="显示/隐藏目录">☰</button>
     <div class="legend">
       <div class="legend-item">
         <div class="legend-dot dot-shici"></div>
@@ -29,16 +25,17 @@
 
   <div class="layout">
     <div class="panel-text">
+      <div id="article-nav"></div>
+    </div>
+    <div id="article-body">
       <div id="article-title"></div>
       <div id="text-display"></div>
     </div>
     <div class="panel-results">
-      <!-- 详情视图（点击词后显示） -->
       <div id="word-detail" class="word-detail hidden">
         <button id="detail-back">← 返回列表</button>
         <div id="detail-content"></div>
       </div>
-      <!-- 总览列表 -->
       <div id="results"></div>
     </div>
   </div>

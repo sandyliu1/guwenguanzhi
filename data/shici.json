@@ -3919,5 +3919,71 @@
         ]
       }
     ]
+  },
+  "为": {
+    "usages": [
+      {
+        "desc": "做，干，行动",
+        "examples": []
+      },
+      {
+        "desc": "管理，治理",
+        "examples": [
+          {
+            "sentence": "为民者宣之使言。",
+            "source": "召公谏厉王止谤"
+          }
+        ]
+      },
+      {
+        "desc": "是（判断词）",
+        "examples": []
+      },
+      {
+        "desc": "成为，变为",
+        "examples": []
+      },
+      {
+        "desc": "介词，替，给",
+        "examples": []
+      },
+      {
+        "desc": "介词，因为，为了",
+        "examples": []
+      }
+    ]
+  },
+  "于": {
+    "usages": [
+      {
+        "desc": "在（表示处所）",
+        "examples": [
+          {
+            "sentence": "郑武公娶于申。",
+            "source": "郑伯克段于鄢"
+          }
+        ]
+      },
+      {
+        "desc": "到，往",
+        "examples": []
+      },
+      {
+        "desc": "从，自",
+        "examples": []
+      },
+      {
+        "desc": "对，对于",
+        "examples": []
+      },
+      {
+        "desc": "比（表比较）",
+        "examples": []
+      },
+      {
+        "desc": "被（表被动）",
+        "examples": []
+      }
+    ]
   }
 }
