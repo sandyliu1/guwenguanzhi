@@ -177,22 +177,57 @@ async function init() {
 
   const trigger = document.getElementById('article-select-trigger');
   const dropdown = document.getElementById('article-select-dropdown');
+  const periodFilters = document.getElementById('period-filters');
+
+  let activePeriod = null;
+
+  // Build period filter buttons
+  const periods = [...new Set(articles.map(a => a.period).filter(Boolean))];
+  if (periods.length > 0) {
+    periods.forEach(period => {
+      const btn = document.createElement('button');
+      btn.className = 'period-btn';
+      btn.textContent = period;
+      btn.dataset.period = period;
+      btn.addEventListener('click', () => {
+        if (activePeriod === period) {
+          activePeriod = null;
+          btn.classList.remove('active');
+        } else {
+          activePeriod = period;
+          periodFilters.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        }
+        rebuildDropdown();
+      });
+      periodFilters.appendChild(btn);
+    });
+  }
+
+  function getFilteredArticles() {
+    return activePeriod ? articles.filter(a => a.period === activePeriod) : articles;
+  }
+
+  function rebuildDropdown() {
+    dropdown.innerHTML = '';
+    const filtered = getFilteredArticles();
+    filtered.forEach((a) => {
+      const idx = articles.indexOf(a);
+      const li = document.createElement('li');
+      li.textContent = a.title;
+      li.addEventListener('click', () => selectArticle(idx));
+      dropdown.appendChild(li);
+    });
+    // Auto-select first of filtered list
+    if (filtered.length > 0) selectArticle(articles.indexOf(filtered[0]));
+  }
 
   function selectArticle(i) {
     trigger.textContent = articles[i].title;
-    dropdown.querySelectorAll('li').forEach((li, j) => {
-      li.classList.toggle('selected', j === i);
-    });
+    dropdown.querySelectorAll('li').forEach((li) => li.classList.remove('selected'));
     dropdown.classList.remove('open');
     runAnalysis(articles[i]);
   }
-
-  articles.forEach((a, i) => {
-    const li = document.createElement('li');
-    li.textContent = a.title;
-    li.addEventListener('click', () => selectArticle(i));
-    dropdown.appendChild(li);
-  });
 
   trigger.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -201,7 +236,7 @@ async function init() {
 
   document.addEventListener('click', () => dropdown.classList.remove('open'));
 
-  if (articles.length > 0) selectArticle(0);
+  rebuildDropdown();
 }
 
 init();

@@ -14,10 +14,11 @@ body {
 header {
   background: #3d2b1f;
   color: #f5e6c8;
-  padding: 16px 32px;
+  padding: 12px 32px;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 header h1 {
@@ -25,6 +26,26 @@ header h1 {
   font-weight: 600;
   letter-spacing: 0.1em;
 }
+
+.period-filters {
+  display: flex;
+  gap: 8px;
+}
+
+.period-btn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  border: 1px solid #c9a97a;
+  border-radius: 12px;
+  background: transparent;
+  color: #f5e6c8;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.period-btn:hover { background: rgba(255,255,255,0.1); }
+.period-btn.active { background: #c9a97a; color: #2c2c2c; font-weight: 600; }
 
 .custom-select {
   position: relative;

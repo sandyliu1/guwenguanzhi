@@ -36,39 +36,38 @@ export function highlightText(text, shiciMatches, xuciMatches) {
     ...Object.keys(xuciMatches).map(w => ({ word: w, type: 'xuci' })),
   ];
 
-  // Sort by length descending to avoid partial overlaps
   allWords.sort((a, b) => b.word.length - a.word.length);
 
-  // Use a character array approach to avoid double-marking
-  const chars = Array.from(text).map(ch => ({ ch, type: null }));
+  // Store both type and the matched word for each char position
+  const chars = Array.from(text).map(ch => ({ ch, type: null, word: null }));
 
   for (const { word, type } of allWords) {
     const wChars = Array.from(word);
     for (let i = 0; i <= chars.length - wChars.length; i++) {
       if (wChars.every((c, j) => chars[i + j].ch === c)) {
-        // Only mark if not already marked
         if (wChars.every((c, j) => chars[i + j].type === null)) {
           for (let j = 0; j < wChars.length; j++) {
             chars[i + j].type = type;
+            chars[i + j].word = word;
           }
         }
       }
     }
   }
 
-  // Build HTML string
   let html = '';
   let i = 0;
   while (i < chars.length) {
-    const { ch, type } = chars[i];
+    const { ch, type, word } = chars[i];
     if (type) {
-      // Collect consecutive chars of same type
+      // Collect only chars belonging to the same word instance
       let span = '';
-      while (i < chars.length && chars[i].type === type) {
+      const currentWord = word;
+      while (i < chars.length && chars[i].word === currentWord) {
         span += chars[i].ch;
         i++;
       }
-      html += `<mark class="mark-${type}" data-word="${span}">${span}</mark>`;
+      html += `<mark class="mark-${type}" data-word="${currentWord}">${span}</mark>`;
     } else {
       html += ch === '\n' ? '<br>' : ch;
       i++;
