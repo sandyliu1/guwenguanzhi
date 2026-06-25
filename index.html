@@ -20,6 +20,10 @@
         <div class="legend-dot dot-xuci"></div>
         <span>虚词</span>
       </div>
+      <div class="legend-item">
+        <div class="legend-dot dot-key"></div>
+        <span>重点</span>
+      </div>
     </div>
   </header>
 
@@ -31,13 +35,12 @@
       <div id="article-title"></div>
       <div id="text-display"></div>
     </div>
-    <div class="panel-results">
-      <div id="word-detail" class="word-detail hidden">
-        <button id="detail-back">← 返回列表</button>
-        <div id="detail-content"></div>
-      </div>
-      <div id="results"></div>
-    </div>
+  </div>
+
+  <!-- 右侧抽屉 -->
+  <div id="word-drawer" class="word-drawer">
+    <button id="word-drawer-close">✕</button>
+    <div id="word-drawer-content"></div>
   </div>
 
   <script type="module" src="src/main.js"></script>

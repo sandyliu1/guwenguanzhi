@@ -30,7 +30,8 @@ export function analyze(text, wordMap) {
 }
 
 // Highlight all matched words in the text with <mark> tags
-export function highlightText(text, shiciMatches, xuciMatches) {
+// keyPhrases: [{word, sentence}] — mark specific word in specific sentence as 'key'
+export function highlightText(text, shiciMatches, xuciMatches, keyPhrases = []) {
   const allWords = [
     ...Object.keys(shiciMatches).map(w => ({ word: w, type: 'shici' })),
     ...Object.keys(xuciMatches).map(w => ({ word: w, type: 'xuci' })),
@@ -38,7 +39,7 @@ export function highlightText(text, shiciMatches, xuciMatches) {
 
   allWords.sort((a, b) => b.word.length - a.word.length);
 
-  // Store both type and the matched word for each char position
+  // Store type and word for each char position
   const chars = Array.from(text).map(ch => ({ ch, type: null, word: null }));
 
   for (const { word, type } of allWords) {
@@ -55,19 +56,34 @@ export function highlightText(text, shiciMatches, xuciMatches) {
     }
   }
 
+  // Build a Set of char positions that are "key" highlighted
+  // For each keyPhrase, find the sentence in text, then mark the word inside it
+  const keyPositions = new Set();
+  for (const { word, sentence } of keyPhrases) {
+    const sentIdx = text.indexOf(sentence);
+    if (sentIdx === -1) continue;
+    // Find word within that sentence occurrence
+    const wordIdx = text.indexOf(word, sentIdx);
+    if (wordIdx === -1 || wordIdx > sentIdx + sentence.length) continue;
+    for (let k = 0; k < Array.from(word).length; k++) {
+      keyPositions.add(wordIdx + k);
+    }
+  }
+
   let html = '';
   let i = 0;
   while (i < chars.length) {
     const { ch, type, word } = chars[i];
     if (type) {
-      // Collect only chars belonging to the same word instance
       let span = '';
       const currentWord = word;
+      const isKey = keyPositions.has(i);
       while (i < chars.length && chars[i].word === currentWord) {
         span += chars[i].ch;
         i++;
       }
-      html += `<mark class="mark-${type}" data-word="${currentWord}">${span}</mark>`;
+      const cls = isKey ? `mark-key` : `mark-${type}`;
+      html += `<mark class="${cls}" data-word="${currentWord}">${span}</mark>`;
     } else {
       html += ch === '\n' ? '<br>' : ch;
       i++;
