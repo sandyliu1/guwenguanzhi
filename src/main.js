@@ -121,8 +121,22 @@ function runAnalysis(article) {
   document.getElementById('article-title').textContent =
     `${article.title}（${article.author}）`;
 
+  const mapToggle = document.getElementById('map-toggle');
+  const mapDrawer = document.getElementById('map-drawer');
   const bgToggle = document.getElementById('bg-toggle');
   const bgDrawer = document.getElementById('bg-drawer');
+
+  if (article.map) {
+    mapToggle.style.display = 'inline-block';
+    mapToggle.onclick = () => {
+      document.getElementById('map-drawer-content').innerHTML =
+        `<h3>${article.title} · 地图</h3><img src="${article.map}" alt="地图">`;
+      mapDrawer.classList.add('open');
+    };
+  } else {
+    mapToggle.style.display = 'none';
+    mapDrawer.classList.remove('open');
+  }
 
   if (article.background) {
     bgToggle.style.display = 'inline-block';
@@ -150,14 +164,21 @@ async function init() {
   document.getElementById('bg-drawer-close').addEventListener('click', () => {
     document.getElementById('bg-drawer').classList.remove('open');
   });
+  document.getElementById('map-drawer-close').addEventListener('click', () => {
+    document.getElementById('map-drawer').classList.remove('open');
+  });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') {
     hideWordModal();
     document.getElementById('bg-drawer').classList.remove('open');
+    document.getElementById('map-drawer').classList.remove('open');
   }});
   document.addEventListener('click', (e) => {
     if (!e.target.closest('mark') && !e.target.closest('#word-drawer')) hideWordModal();
     if (!e.target.closest('#bg-drawer') && !e.target.closest('#bg-toggle')) {
       document.getElementById('bg-drawer').classList.remove('open');
+    }
+    if (!e.target.closest('#map-drawer') && !e.target.closest('#map-toggle')) {
+      document.getElementById('map-drawer').classList.remove('open');
     }
   });
 

@@ -297,6 +297,43 @@ header h1 {
 }
 .bg-drawer.open { transform: translateX(0); }
 
+#map-drawer {
+  width: 520px;
+}
+
+#map-drawer-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: #7a5530;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+#map-drawer-close:hover { background: #f0e8d8; }
+
+#map-drawer-content img {
+  width: 100%;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+#map-toggle {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  padding: 2px 8px;
+  border: 1px solid #5a8a50;
+  border-radius: 10px;
+  background: transparent;
+  color: #3a6030;
+  cursor: pointer;
+  line-height: 1.6;
+}
+#map-toggle:hover { background: #eaf5e0; }
+
 #bg-drawer-close {
   position: absolute;
   top: 12px;
