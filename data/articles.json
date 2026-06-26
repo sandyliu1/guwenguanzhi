@@ -82,14 +82,69 @@
     "category": "周文",
     "annotations": [
       {
-        "word": "虢",
-        "phonetic": "guó",
-        "desc": ""
-      },
-      {
         "word": "亟",
         "phonetic": "qì",
-        "desc": ""
+        "desc": "屡次。"
+      },
+      {
+        "word": "制",
+        "phonetic": "",
+        "desc": "地名，即虎牢，河南省荥（xíng）阳县西北。"
+      },
+      {
+        "word": "岩",
+        "phonetic": "",
+        "desc": "岩邑：险要的城镇。岩，险要。邑，人所聚居的地方。"
+      },
+      {
+        "word": "虢",
+        "phonetic": "guó",
+        "desc": "指东虢，古国名，为郑国所灭。"
+      },
+      {
+        "word": "佗",
+        "phonetic": "",
+        "desc": "同他，指示代词，别的，另外的。"
+      },
+      {
+        "word": "雉",
+        "phonetic": "",
+        "desc": "古代城墙长一丈、宽一丈、高一丈为一堵，三堵为一雉，即长三丈。"
+      },
+      {
+        "word": "度",
+        "phonetic": "",
+        "desc": "法度。"
+      },
+      {
+        "word": "图",
+        "phonetic": "",
+        "desc": "除掉。"
+      },
+      {
+        "word": "姑",
+        "phonetic": "",
+        "desc": "姑且，暂且。"
+      },
+      {
+        "word": "鄙",
+        "phonetic": "",
+        "desc": "边邑，边境上的城邑。"
+      },
+      {
+        "word": "贰",
+        "phonetic": "",
+        "desc": "两属。"
+      },
+      {
+        "word": "廪",
+        "phonetic": "lǐn",
+        "desc": "廪延：地名，河南省延津县北。"
+      },
+      {
+        "word": "暱",
+        "phonetic": "nì",
+        "desc": "同昵，亲近。"
       },
       {
         "word": "寤",
@@ -107,19 +162,9 @@
         "desc": ""
       },
       {
-        "word": "廪",
-        "phonetic": "lǐn",
-        "desc": ""
-      },
-      {
-        "word": "暱",
-        "phonetic": "nì",
-        "desc": ""
-      },
-      {
         "word": "寘",
         "phonetic": "zhì",
-        "desc": ""
+        "desc": "\"置\"的通假字。放置，放逐。"
       },
       {
         "word": "颍",
@@ -134,22 +179,32 @@
       {
         "word": "遗",
         "phonetic": "wèi",
-        "desc": ""
+        "desc": "赠送。"
       },
       {
         "word": "繄",
         "phonetic": "yī",
-        "desc": ""
+        "desc": "句首语气助词，不译。"
       },
       {
         "word": "阙",
         "phonetic": "jué",
-        "desc": ""
+        "desc": "通\"掘\"，挖。"
       },
       {
         "word": "洩",
         "phonetic": "xiè",
         "desc": ""
+      },
+      {
+        "word": "匮",
+        "phonetic": "",
+        "desc": "尽。"
+      },
+      {
+        "word": "锡",
+        "phonetic": "",
+        "desc": "通\"赐\"，给与。"
       }
     ]
   },

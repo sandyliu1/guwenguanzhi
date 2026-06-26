@@ -353,14 +353,14 @@ mark.mark-xuci:hover { background: #a8ddd0; }
 mark.mark-key { background: #ff8c00; color: #fff; font-weight: 700; }
 mark.mark-key:hover { background: #e07800; }
 mark.mark-annotation {
-  background: #e8d5f5;
-  color: #3a1a5c;
+  background: #f2eafa;
+  color: #5a3a7a;
   cursor: default;
   position: relative;
   display: inline;
   padding: 0 1px;
 }
-mark.mark-annotation:hover { background: #d8bef0; }
+mark.mark-annotation:hover { background: #e6d5f7; }
 
 .ann-phonetic {
   font-size: 0.6em;
