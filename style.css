@@ -24,6 +24,13 @@ header {
   flex-shrink: 0;
 }
 
+#site-logo {
+  height: 48px;
+  width: 48px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
 header h1 {
   font-size: 1.3rem;
   font-weight: 600;
@@ -366,7 +373,7 @@ header h1 {
 }
 
 #text-display {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   line-height: 2.4;
   text-align: justify;
 }
