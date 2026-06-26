@@ -354,8 +354,19 @@ mark.mark-key { background: #ff8c00; color: #fff; font-weight: 700; }
 mark.mark-key:hover { background: #e07800; }
 mark.mark-annotation { background: #e8d5f5; color: #3a1a5c; cursor: default; position: relative; }
 mark.mark-annotation:hover { background: #d8bef0; }
-mark.mark-annotation ruby { display: inline; }
-mark.mark-annotation rt { font-size: 0.55em; color: #7a4a9c; }
+mark.mark-annotation ruby,
+ruby.phonetic-only {
+  display: inline-ruby;
+  ruby-position: over;
+  line-height: 1;
+}
+mark.mark-annotation rt,
+ruby.phonetic-only rt {
+  font-size: 0.5em;
+  color: #9a7abf;
+  line-height: 1.2;
+  text-align: center;
+}
 
 mark.mark-annotation::after {
   content: attr(data-annotation);

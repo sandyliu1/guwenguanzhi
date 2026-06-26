@@ -122,7 +122,11 @@ export function highlightText(text, shiciMatches, xuciMatches, keyPhrases = [], 
       }
       if (type === 'annotation' && ann) {
         const safeDesc = ann.desc.replace(/"/g, '&quot;');
-        html += `<mark class="mark-annotation" data-annotation="${safeDesc}" title="${safeDesc}"><ruby>${span}<rt>${ann.phonetic}</rt></ruby></mark>`;
+        if (ann.desc) {
+          html += `<mark class="mark-annotation" data-annotation="${safeDesc}" title="${safeDesc}"><ruby>${span}<rt>${ann.phonetic}</rt></ruby></mark>`;
+        } else {
+          html += `<ruby class="phonetic-only">${span}<rt>${ann.phonetic}</rt></ruby>`;
+        }
       } else {
         const cls = isKey ? `mark-key` : `mark-${type}`;
         html += `<mark class="${cls}" data-word="${currentWord}">${span}</mark>`;

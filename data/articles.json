@@ -62,7 +62,79 @@
         "sentence": "郑伯克段于鄢"
       }
     ],
-    "category": "周文"
+    "category": "周文",
+    "annotations": [
+      {
+        "word": "虢",
+        "phonetic": "guó",
+        "desc": ""
+      },
+      {
+        "word": "亟",
+        "phonetic": "qì",
+        "desc": ""
+      },
+      {
+        "word": "寤",
+        "phonetic": "wù",
+        "desc": ""
+      },
+      {
+        "word": "祭",
+        "phonetic": "zhài",
+        "desc": ""
+      },
+      {
+        "word": "大叔",
+        "phonetic": "tài shū",
+        "desc": ""
+      },
+      {
+        "word": "廪",
+        "phonetic": "lǐn",
+        "desc": ""
+      },
+      {
+        "word": "暱",
+        "phonetic": "nì",
+        "desc": ""
+      },
+      {
+        "word": "寘",
+        "phonetic": "zhì",
+        "desc": ""
+      },
+      {
+        "word": "颍",
+        "phonetic": "yǐng",
+        "desc": ""
+      },
+      {
+        "word": "羹",
+        "phonetic": "gēng",
+        "desc": ""
+      },
+      {
+        "word": "遗",
+        "phonetic": "wèi",
+        "desc": ""
+      },
+      {
+        "word": "繄",
+        "phonetic": "yī",
+        "desc": ""
+      },
+      {
+        "word": "阙",
+        "phonetic": "jué",
+        "desc": ""
+      },
+      {
+        "word": "洩",
+        "phonetic": "xiè",
+        "desc": ""
+      }
+    ]
   },
   {
     "title": "周郑交质",
