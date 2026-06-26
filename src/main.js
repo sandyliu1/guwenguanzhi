@@ -197,8 +197,13 @@ async function init() {
 
     const periodHeader = document.createElement('div');
     periodHeader.className = 'nav-period-header';
-    periodHeader.textContent = period;
+    periodHeader.innerHTML = `<span>${period}</span><span class="nav-period-arrow">▾</span>`;
     periodEl.appendChild(periodHeader);
+
+    const periodBody = document.createElement('div');
+    periodBody.className = 'nav-period-body';
+
+    periodHeader.addEventListener('click', () => periodEl.classList.toggle('collapsed'));
 
     Object.entries(categories).forEach(([category, groups]) => {
       const catEl = document.createElement('div');
@@ -236,13 +241,45 @@ async function init() {
       });
 
       catEl.appendChild(catBody);
-      periodEl.appendChild(catEl);
+      periodBody.appendChild(catEl);
     });
 
+    periodEl.appendChild(periodBody);
     nav.appendChild(periodEl);
   });
 
   selectArticle(0);
+
+  // Nav search
+  document.getElementById('nav-search').addEventListener('input', function () {
+    const q = this.value.trim();
+    const items = nav.querySelectorAll('.nav-article-item');
+    if (!q) {
+      items.forEach(el => el.style.display = '');
+      nav.querySelectorAll('.nav-category').forEach(el => el.classList.remove('search-expanded'));
+      nav.querySelectorAll('.nav-group, .nav-period').forEach(el => el.style.display = '');
+      return;
+    }
+    items.forEach(el => {
+      const match = el.textContent.includes(q);
+      el.style.display = match ? '' : 'none';
+    });
+    // Show/hide groups and categories based on whether they have visible items
+    nav.querySelectorAll('.nav-group').forEach(group => {
+      const visible = [...group.querySelectorAll('.nav-article-item')].some(el => el.style.display !== 'none');
+      group.style.display = visible ? '' : 'none';
+    });
+    nav.querySelectorAll('.nav-category').forEach(cat => {
+      const visible = [...cat.querySelectorAll('.nav-article-item')].some(el => el.style.display !== 'none');
+      cat.style.display = visible ? '' : 'none';
+      if (visible) cat.classList.add('search-expanded');
+    });
+    nav.querySelectorAll('.nav-period').forEach(period => {
+      const visible = [...period.querySelectorAll('.nav-article-item')].some(el => el.style.display !== 'none');
+      period.style.display = visible ? '' : 'none';
+      if (visible) period.classList.remove('collapsed');
+    });
+  });
 }
 
 init();
