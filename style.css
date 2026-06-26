@@ -325,6 +325,13 @@ mark.mark-annotation::after {
 }
 mark.mark-annotation:hover::after { opacity: 1; }
 
+.key-sentence {
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-decoration-color: #e07800;
+  text-underline-offset: 4px;
+}
+
 /* ── Right results panel ── */
 .panel-results {
   overflow-y: auto;

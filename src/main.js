@@ -116,7 +116,7 @@ function runAnalysis(article) {
   currentXuciMatches = analyze(text, xuciData);
 
   document.getElementById('text-display').innerHTML =
-    highlightText(text, currentShiciMatches, currentXuciMatches, article.keyPhrases || [], article.annotations || []);
+    highlightText(text, currentShiciMatches, currentXuciMatches, article.keyPhrases || [], article.annotations || [], article.keySentences || []);
 
   document.getElementById('article-title').textContent =
     `${article.title}（${article.author}）`;
@@ -156,6 +156,9 @@ async function init() {
   }});
   document.addEventListener('click', (e) => {
     if (!e.target.closest('mark') && !e.target.closest('#word-drawer')) hideWordModal();
+    if (!e.target.closest('#bg-drawer') && !e.target.closest('#bg-toggle')) {
+      document.getElementById('bg-drawer').classList.remove('open');
+    }
   });
 
   // Nav toggle

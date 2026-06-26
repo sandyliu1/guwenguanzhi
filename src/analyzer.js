@@ -32,7 +32,8 @@ export function analyze(text, wordMap) {
 // Highlight all matched words in the text with <mark> tags
 // keyPhrases: [{word, sentence}] — mark specific word in specific sentence as 'key'
 // annotations: [{word, phonetic, desc}] — mark with ruby phonetic and tooltip
-export function highlightText(text, shiciMatches, xuciMatches, keyPhrases = [], annotations = []) {
+// keySentences: [string] — wrap sentence with dashed underline
+export function highlightText(text, shiciMatches, xuciMatches, keyPhrases = [], annotations = [], keySentences = []) {
   const allWords = [
     ...Object.keys(shiciMatches).map(w => ({ word: w, type: 'shici' })),
     ...Object.keys(xuciMatches).map(w => ({ word: w, type: 'xuci' })),
@@ -83,9 +84,31 @@ export function highlightText(text, shiciMatches, xuciMatches, keyPhrases = [], 
     }
   }
 
+  // Build set of char positions covered by keySentences
+  const keySentenceRanges = []; // [{start, end}]
+  const textChars = Array.from(text);
+  for (const sentence of keySentences) {
+    const sChars = Array.from(sentence);
+    outer: for (let i = 0; i <= textChars.length - sChars.length; i++) {
+      for (let j = 0; j < sChars.length; j++) {
+        if (textChars[i + j] !== sChars[j]) continue outer;
+      }
+      keySentenceRanges.push({ start: i, end: i + sChars.length });
+    }
+  }
+
+  function isKeySentencePos(pos) {
+    return keySentenceRanges.some(r => pos >= r.start && pos < r.end);
+  }
+
   let html = '';
   let i = 0;
+  let inKeySentence = false;
   while (i < chars.length) {
+    const inKS = isKeySentencePos(i);
+    if (inKS && !inKeySentence) { html += '<span class="key-sentence">'; inKeySentence = true; }
+    if (!inKS && inKeySentence) { html += '</span>'; inKeySentence = false; }
+
     const { ch, type, word } = chars[i];
     if (type) {
       let span = '';
@@ -93,6 +116,7 @@ export function highlightText(text, shiciMatches, xuciMatches, keyPhrases = [], 
       const isKey = keyPositions.has(i);
       const ann = annotationMap[i];
       while (i < chars.length && chars[i].word === currentWord) {
+        // check if we cross a keySentence boundary mid-word (unlikely but safe)
         span += chars[i].ch;
         i++;
       }
@@ -108,5 +132,7 @@ export function highlightText(text, shiciMatches, xuciMatches, keyPhrases = [], 
       i++;
     }
   }
+  if (inKeySentence) html += '</span>';
+
   return html;
 }
