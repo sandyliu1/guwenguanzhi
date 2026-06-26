@@ -101,7 +101,7 @@ export function highlightText(text, shiciMatches, xuciMatches, keyPhrases = [], 
     return keySentenceRanges.some(r => pos >= r.start && pos < r.end);
   }
 
-  let html = '';
+  let html = '<p class="text-para">';
   let i = 0;
   let inKeySentence = false;
   while (i < chars.length) {
@@ -128,11 +128,12 @@ export function highlightText(text, shiciMatches, xuciMatches, keyPhrases = [], 
         html += `<mark class="${cls}" data-word="${currentWord}">${span}</mark>`;
       }
     } else {
-      html += ch === '\n' ? '<br>' : ch;
+      html += ch === '\n' ? '</p><p class="text-para">' : ch;
       i++;
     }
   }
   if (inKeySentence) html += '</span>';
+  html += '</p>';
 
   return html;
 }
