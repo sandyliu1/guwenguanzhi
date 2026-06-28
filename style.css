@@ -370,6 +370,7 @@ header h1 {
 }
 #bg-drawer-content p {
   margin: 0 0 12px;
+  text-indent: 2em;
 }
 
 #text-display {
