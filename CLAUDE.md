@@ -20,7 +20,12 @@ GuwenLearner/
 ├── data/
 │   ├── shici.json          # 47 常考实词，结构：{word: {usages: [{desc, examples:[{sentence,source}]}]}}
 │   ├── xuci.json           # 18 常考虚词，结构：{word: {usages: [{desc, subs:[{desc,examples}], examples}], compounds:[{term,desc,examples}]}}
-│   └── articles.json       # 文章列表，结构：[{title, author, content}]
+│   ├── articles.json       # 文章索引（仅含导航字段，不含正文），结构见下
+│   └── articles/           # 每篇文章的完整数据，文件名 = title + .json
+│       ├── 郑伯克段于鄢.json
+│       └── ...
+├── scripts/
+│   └── split-articles.js   # 将 articles.json 全量文件拆分为索引+独立文件（一次性工具）
 ├── basicWords/             # 原始 Word 文档（实词/虚词词库来源）
 │   ├── 120个文言实词用法及其举例.docx
 │   └── 18个文言虚词用法及举例.docx
@@ -40,45 +45,110 @@ npx serve . -p 3456
 GitHub Pages: https://liuzuosong-tech.github.io/GuwenLearner/
 GitHub repo: https://github.com/liuzuosong-tech/GuwenLearner.git
 
-Push to deploy:
+Push to deploy (only push to sandy remote, origin token expired):
 ```bash
-git add -A && git commit -m "..." && git push
+git add ... && git commit -m "..." && git push sandy main
 ```
 
 ## Adding a New Article
 
-1. User puts the `.docx` file into `articals/`
-2. Run the following Python to extract and append to `data/articles.json`:
+文章数据分两层：
+- `data/articles.json`：索引文件，只含导航字段（title/author/period/group/category/id）
+- `data/articles/<title>.json`：完整文章数据，页面按需加载
+
+### 步骤
+
+1. 把 `.docx` 放入 `articals/`
+
+2. 运行以下 Python 脚本，同时更新索引和创建详情文件：
 
 ```python
-import docx, json, re
+import docx, json, os
 
 doc = docx.Document(r'articals/新文章.docx')
 paragraphs = [p.text.strip() for p in doc.paragraphs if p.text.strip()]
 
-# First line = title, second line = author, rest = content
 title = paragraphs[0]
 author = paragraphs[1]
 content = ''.join(paragraphs[2:])
 
+# 完整文章数据（详情文件）
+detail = {
+    'title': title,
+    'author': author,
+    'period': '春秋',
+    'group': '分组名',
+    'category': '周文',
+    'content': content,
+    'background': '',
+    'keySentences': [],
+    'annotations': [],
+}
+os.makedirs('data/articles', exist_ok=True)
+with open(f'data/articles/{title}.json', 'w', encoding='utf-8') as f:
+    json.dump(detail, f, ensure_ascii=False, indent=2)
+
+# 索引文件（只加导航字段）
 with open('data/articles.json', encoding='utf-8') as f:
-    articles = json.load(f)
-
-articles.append({'title': title, 'author': author, 'period': '春秋', 'content': content})
-
+    index = json.load(f)
+index.append({
+    'id': title,
+    'title': title,
+    'author': author,
+    'period': '春秋',
+    'group': '分组名',
+    'category': '周文',
+})
 with open('data/articles.json', 'w', encoding='utf-8') as f:
-    json.dump(articles, f, ensure_ascii=False, indent=2)
+    json.dump(index, f, ensure_ascii=False, indent=2)
+
+print(f'Done: {title}')
 ```
 
-3. Verify in browser at `http://localhost:3456`
-4. Push:
+3. 在浏览器 `http://localhost:3456` 验证
+
+4. Push：
 ```bash
-git add data/articles.json articals/新文章.docx
+git add data/articles.json data/articles/<title>.json articals/<title>.docx
 git commit -m "Add article: <title>"
-git push
+git push sandy main
 ```
 
 ## Data JSON Structures
+
+**articles.json（索引，导航用）**
+```json
+[
+  {
+    "id": "郑伯克段于鄢",
+    "title": "郑伯克段于鄢",
+    "author": "左丘明·先秦",
+    "period": "春秋",
+    "group": "小霸王郑庄公",
+    "category": "周文"
+  }
+]
+```
+
+**data/articles/<title>.json（完整文章数据，按需加载）**
+```json
+{
+  "title": "郑伯克段于鄢",
+  "author": "左丘明·先秦",
+  "period": "春秋",
+  "group": "小霸王郑庄公",
+  "category": "周文",
+  "content": "初，郑武公...",
+  "background": "背景说明文字，段落间用 \\n\\n 分隔。注意：不能含未转义的英文双引号。",
+  "keySentences": ["需要画线的句子原文"],
+  "keyPhrases": [{"word": "于", "sentence": "郑伯克段于鄢"}],
+  "annotations": [
+    {"word": "亟", "phonetic": "qì", "desc": "屡次。"},
+    {"word": "虢", "phonetic": "guó", "desc": ""}
+  ],
+  "map": "images/zhengguo.jpg"
+}
+```
 
 **shici.json**
 ```json
@@ -107,14 +177,10 @@ git push
 }
 ```
 
-**articles.json**
-```json
-[{"title": "郑伯克段于鄢", "author": "左丘明·先秦", "content": "初，郑武公..."}]
-```
-
 ## Key Behavior
 
 - Sentence boundary: split on `。？！；`
 - Matching is character-level
 - Clicking a highlighted word in the text → right panel shows detail view (用法释义 + 本文出现)
-- "← 返回列表" button returns to the full word list
+- articles.json is loaded once at startup (index only); full article data is fetched on demand from `data/articles/<id>.json` and cached in memory
+- JSON strings must not contain unescaped English double quotes `"` — use single quotes `'` or Chinese quotes `「」` inside string values

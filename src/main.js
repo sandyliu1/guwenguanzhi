@@ -6,6 +6,7 @@ let articles = [];
 let currentShiciMatches = {};
 let currentXuciMatches = {};
 let selectArticle = () => {};
+const articleCache = {};
 
 async function loadData() {
   const [s, x, a] = await Promise.all([
@@ -207,12 +208,16 @@ async function init() {
   const nav = document.getElementById('article-nav');
   let currentIdx = 0;
 
-  selectArticle = (i) => {
+  selectArticle = async (i) => {
     currentIdx = i;
     nav.querySelectorAll('.nav-article-item').forEach(el => {
       el.classList.toggle('active', +el.dataset.idx === i);
     });
-    runAnalysis(articles[i], i);
+    const meta = articles[i];
+    if (!articleCache[meta.id]) {
+      articleCache[meta.id] = await fetch(`./data/articles/${encodeURIComponent(meta.id)}.json`).then(r => r.json());
+    }
+    runAnalysis(articleCache[meta.id], i);
   };
 
   // Build nav: period → category (collapsible) → group → articles
