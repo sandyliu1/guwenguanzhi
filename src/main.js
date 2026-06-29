@@ -5,6 +5,7 @@ let xuciData = {};
 let articles = [];
 let currentShiciMatches = {};
 let currentXuciMatches = {};
+let selectArticle = () => {};
 
 async function loadData() {
   const [s, x, a] = await Promise.all([
@@ -110,7 +111,7 @@ function hideWordModal() {
   document.getElementById('word-drawer').classList.remove('open');
 }
 
-function runAnalysis(article) {
+function runAnalysis(article, idx) {
   const text = article.content;
   currentShiciMatches = analyze(text, shiciData);
   currentXuciMatches = analyze(text, xuciData);
@@ -120,6 +121,13 @@ function runAnalysis(article) {
 
   document.getElementById('article-title').textContent =
     `${article.title}（${article.author}）`;
+
+  const prevBtn = document.getElementById('prev-article');
+  const nextBtn = document.getElementById('next-article');
+  prevBtn.style.display = idx > 0 ? 'inline-block' : 'none';
+  nextBtn.style.display = idx < articles.length - 1 ? 'inline-block' : 'none';
+  prevBtn.onclick = () => selectArticle(idx - 1);
+  nextBtn.onclick = () => selectArticle(idx + 1);
 
   const mapToggle = document.getElementById('map-toggle');
   const mapDrawer = document.getElementById('map-drawer');
@@ -174,12 +182,20 @@ async function init() {
   }});
   document.addEventListener('click', (e) => {
     if (!e.target.closest('mark') && !e.target.closest('#word-drawer')) hideWordModal();
-    if (!e.target.closest('#bg-drawer') && !e.target.closest('#bg-toggle')) {
+    if (!e.target.closest('#bg-drawer') && !e.target.closest('#bg-toggle') && !e.target.closest('#site-info-toggle')) {
       document.getElementById('bg-drawer').classList.remove('open');
     }
     if (!e.target.closest('#map-drawer') && !e.target.closest('#map-toggle')) {
       document.getElementById('map-drawer').classList.remove('open');
     }
+  });
+
+  const siteInfoText = `析义理于精微之蕴，辨字句于毫发之间\n\n《古文观止》，是清人吴楚材、吴调侯叔侄两人选编和注释的一部文言散文选集。书中选编了上起东周下至明代的二百二十二篇散文作品，其中绝大多数为古文，个别为散文中的经典作品，作品题材涉及史传、策论、游记、书信、笔记等，由于古文观止入选作品题材广泛、代表性强、语言简洁易明，篇幅短小精髓，言辞优美，因而一经出版便非常流行，成为文言文教学的经典教材，至今在大中华地区中学文言文教材中，仍有很多篇章由此书辑录。\n\n观止典出《左传》的"季札观周乐"一节：吴国公子季札在鲁国观《韶箫》之后，赞叹道："观止矣！若有他乐，吾不敢请已。"`;
+  document.getElementById('site-info-toggle').addEventListener('click', () => {
+    const bgDrawer = document.getElementById('bg-drawer');
+    const paragraphs = siteInfoText.split('\n\n').map(p => `<p>${p}</p>`).join('');
+    document.getElementById('bg-drawer-content').innerHTML = `<h3>古文观止</h3>${paragraphs}`;
+    bgDrawer.classList.add('open');
   });
 
   // Nav toggle
@@ -191,13 +207,13 @@ async function init() {
   const nav = document.getElementById('article-nav');
   let currentIdx = 0;
 
-  function selectArticle(i) {
+  selectArticle = (i) => {
     currentIdx = i;
     nav.querySelectorAll('.nav-article-item').forEach(el => {
       el.classList.toggle('active', +el.dataset.idx === i);
     });
-    runAnalysis(articles[i]);
-  }
+    runAnalysis(articles[i], i);
+  };
 
   // Build nav: period → category (collapsible) → group → articles
   const periodMap = {};

@@ -258,11 +258,28 @@ header h1 {
 
 .article-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
   margin-bottom: 20px;
   border-bottom: 2px solid #c9a97a;
   padding-bottom: 8px;
+}
+
+#prev-article, #next-article {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: #8b6340;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.15s, color 0.15s;
+}
+#prev-article:hover, #next-article:hover {
+  opacity: 1;
+  color: #3d2b1f;
 }
 
 #article-title {
