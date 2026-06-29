@@ -429,7 +429,17 @@
     "period": "春秋",
     "group": "小霸王郑庄公",
     "category": "周文",
-    "map": "images/zhegnguofaxu.jpg"
+    "map": "images/zhegnguofaxu.jpg",
+    "annotations": [
+      { "word": "庚", "phonetic": "gēng", "desc": "" },
+      { "word": "傅", "phonetic": "fù", "desc": "" },
+      { "word": "颍", "phonetic": "yǐng", "desc": "" },
+      { "word": "蝥", "phonetic": "máo", "desc": "" },
+      { "word": "瑕", "phonetic": "xiá", "desc": "" },
+      { "word": "盈", "phonetic": "yíng", "desc": "" },
+      { "word": "麾", "phonetic": "huī", "desc": "" },
+      { "word": "逞", "phonetic": "chěng", "desc": "" }
+    ]
   },
   {
     "title": "曹刿论战",
